@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:argon_admin/app/constants/api_constant.dart';
 import 'package:argon_admin/app/constants/sizeConstant.dart';
 import 'package:argon_admin/app/data/NetworkClient.dart';
@@ -8,7 +7,6 @@ import 'package:argon_admin/utilities/custome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart' hide FormData;
-
 import '../../../../main.dart';
 
 class LeaveScreenController extends GetxController {

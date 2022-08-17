@@ -187,7 +187,7 @@ class DashboardScreenView extends GetWidget<DashboardScreenController> {
                       height: MySize.getHeight(30),
                       width: MySize.getWidth(30),
                       child: const Image(
-                        image: AssetImage("assets/ic_leave.png"),
+                        image: AssetImage("assets/holiday_icon.png"),
                         fit: BoxFit.contain,
                       )),
                   Space.width(20),

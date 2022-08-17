@@ -269,8 +269,14 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
                                         ),
                                       ),
                                       Expanded(
-                                          child: Center(
-                                        child: Text("Delete"),
+                                          child: InkWell(
+                                        onTap: () {
+                                          _asyncConfirmDialog(
+                                              context, index, controller);
+                                        },
+                                        child: Center(
+                                          child: Text("Delete"),
+                                        ),
                                       )),
                                     ],
                                   ),
@@ -387,6 +393,45 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
           ),
         ],
       ),
+    );
+  }
+
+  _asyncConfirmDialog(
+      BuildContext context, int index, LeaveScreenController controller) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button for close dialog!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Leave'),
+          content: const Text('Are you sure you want to delete your Leave?'),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: const Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              color: Colors.red,
+              onPressed: () {
+                Navigator.of(context).pop();
+                controller.leaveRejectAndApprove(
+                  context: context,
+                  operation: "delete_leave",
+                  id: controller.allLeaveList[index].id!,
+                );
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
