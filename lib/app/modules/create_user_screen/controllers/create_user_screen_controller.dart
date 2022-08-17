@@ -41,7 +41,11 @@ class CreateUserScreenController extends GetxController {
     "Flutter Developer",
     "Unity Developer",
     "Android Developer",
-    "Web Developer"
+    "Web Developer",
+    "Game Artist",
+    "Game Designer",
+    "Ios Developer",
+    "UI UX Designer"
   ].obs;
   @override
   void onInit() {

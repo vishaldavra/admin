@@ -17,177 +17,261 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
     return GetBuilder<ApplyHolidayController>(
         init: ApplyHolidayController(),
         builder: (controller) {
-          return Column(
-            children: [
-              getTopSection(controller: controller, context: context),
-              SizedBox(height: MySize.getHeight(20)),
-              Expanded(
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Form(
-                        key: controller.formKey,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Obx(() {
-                                    return Container(
-                                      width: MySize.getWidth(300),
-                                      child: SfDateRangePicker(
-                                        onSelectionChanged:
-                                            (DateRangePickerSelectionChangedArgs
-                                                args) {
-                                          controller.range.value = args.value;
+          return SingleChildScrollView(
+            child: Container(
+              height: MySize.getHeight(900),
+              child: Column(
+                children: [
+                  getTopSection(controller: controller, context: context),
+                  SizedBox(height: MySize.getHeight(20)),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Form(
+                            key: controller.formKey,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Obx(() {
+                                        return Container(
+                                          width: MySize.getWidth(300),
+                                          child: SfDateRangePicker(
+                                            onSelectionChanged:
+                                                (DateRangePickerSelectionChangedArgs
+                                                    args) {
+                                              controller.range.value =
+                                                  args.value;
 
-                                          // print(range.endDate);
-                                        },
-                                        selectionMode:
-                                            DateRangePickerSelectionMode.range,
-                                        //showTodayButton: true,
+                                              // print(range.endDate);
+                                            },
+                                            selectionMode:
+                                                DateRangePickerSelectionMode
+                                                    .range,
+                                            //showTodayButton: true,
 
-                                        initialSelectedRange:
-                                            controller.range.value,
-                                        initialDisplayDate: DateTime.now(),
-                                        minDate: DateTime.now(),
-                                      ),
-                                    );
-                                  }),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: MySize.size20!),
-                                      child: Container(
-                                        width: MySize.getWidth(500),
-                                        child: Align(
-                                          child: Text(
-                                            "Holiday Name:",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: MySize.getHeight(17),
-                                              fontWeight: FontWeight.bold,
+                                            initialSelectedRange:
+                                                controller.range.value,
+                                            initialDisplayDate: DateTime.now(),
+                                            minDate: DateTime.now(),
+                                          ),
+                                        );
+                                      }),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: MySize.size20!),
+                                          child: Container(
+                                            width: MySize.getWidth(500),
+                                            child: Align(
+                                              child: Text(
+                                                "Holiday Name:",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize:
+                                                      MySize.getHeight(17),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              alignment: Alignment.centerLeft,
                                             ),
                                           ),
-                                          alignment: Alignment.centerLeft,
                                         ),
-                                      ),
-                                    ),
-                                    Spacing.height(10),
-                                    Container(
-                                      width: MySize.getWidth(500),
-                                      child: getTextField(
-                                          maxLine: 6,
-                                          isFillColor: true,
-                                          fillColor: Colors.white,
-                                          textEditingController:
-                                              controller.reasonController.value,
-                                          borderColor: Colors.white,
-                                          validator: (val) {
-                                            if (val!.isEmpty) {
-                                              return "Please enter name";
+                                        Spacing.height(10),
+                                        Container(
+                                          width: MySize.getWidth(500),
+                                          child: getTextField(
+                                              maxLine: 6,
+                                              isFillColor: true,
+                                              fillColor: Colors.white,
+                                              textEditingController: controller
+                                                  .reasonController.value,
+                                              borderColor: Colors.white,
+                                              validator: (val) {
+                                                if (val!.isEmpty) {
+                                                  return "Please enter name";
+                                                }
+                                                return null;
+                                              }),
+                                        ),
+                                        Spacing.height(30),
+                                        InkWell(
+                                          onTap: () {
+                                            if (controller.formKey.currentState!
+                                                .validate()) {
+                                              addHoliday(
+                                                  context: context,
+                                                  controller: controller);
                                             }
-                                            return null;
-                                          }),
-                                    ),
-                                    Spacing.height(30),
-                                    InkWell(
-                                      onTap: () {
-                                        if (controller.formKey.currentState!
-                                            .validate()) {
-                                          addHoliday(
-                                              context: context,
-                                              controller: controller);
-                                        }
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: MySize.getWidth(130),
-                                        padding: Spacing.symmetric(
-                                            vertical: 7, horizontal: 10),
-                                        decoration: BoxDecoration(
-                                            color: appTheme.primaryTheme,
-                                            borderRadius: BorderRadius.circular(
-                                                MySize.getHeight(7))),
-                                        child: Text(
-                                          "Add Holiday",
-                                          style: TextStyle(
-                                            fontSize: MySize.getHeight(18),
-                                            color: Colors.white,
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: MySize.getWidth(130),
+                                            padding: Spacing.symmetric(
+                                                vertical: 7, horizontal: 10),
+                                            decoration: BoxDecoration(
+                                                color: appTheme.primaryTheme,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        MySize.getHeight(7))),
+                                            child: Text(
+                                              "Add Holiday",
+                                              style: TextStyle(
+                                                fontSize: MySize.getHeight(18),
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ]),
+                                      ]),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: MySize.size20!,
-                        ),
-                        child: Obx(() {
-                          return Column(
-                            children: [
-                              Text(
-                                "Holidays",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Spacing.height(20),
-                              Expanded(
-                                child: (controller.hasData.value)
-                                    ? ((controller.allHolidayList.isNotEmpty)
-                                        ? Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    MySize.getWidth(100)),
-                                            child: ListView.separated(
-                                              itemBuilder: (context, i) {
-                                                return Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          MySize.getWidth(15),
-                                                      vertical: MySize.size10!),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Colors.black,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            MySize.size12!),
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: MySize.size20!,
+                            ),
+                            child: Obx(() {
+                              return Column(
+                                children: [
+                                  Text(
+                                    "Holidays",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Spacing.height(20),
+                                  Expanded(
+                                    child: (controller.hasData.value)
+                                        ? ((controller
+                                                .allHolidayList.isNotEmpty)
+                                            ? Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        MySize.getWidth(100)),
+                                                child: ListView.separated(
+                                                  itemBuilder: (context, i) {
+                                                    return Container(
+                                                      padding: EdgeInsets
+                                                          .symmetric(
+                                                              horizontal: MySize
+                                                                  .getWidth(15),
+                                                              vertical: MySize
+                                                                  .size10!),
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                          color: Colors.black,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(MySize
+                                                                    .size12!),
+                                                      ),
+                                                      child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
-                                                                .center,
+                                                                .start,
                                                         children: [
                                                           Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    "Holiday date : ",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          MySize
+                                                                              .size16,
+                                                                    ),
+                                                                  ),
+                                                                  Space.width(
+                                                                      10),
+                                                                  Text(
+                                                                    controller
+                                                                            .allHolidayList[
+                                                                                i]
+                                                                            .date1
+                                                                            .toString() +
+                                                                        " - " +
+                                                                        controller
+                                                                            .allHolidayList[i]
+                                                                            .date2
+                                                                            .toString(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          MySize
+                                                                              .size16,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      _asyncConfirmDialog(
+                                                                          context,
+                                                                          i,
+                                                                          controller);
+                                                                    },
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .delete,
+                                                                      color: Colors
+                                                                          .red,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Space.height(5),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Text(
-                                                                "Holiday date : ",
+                                                                "Reason : ",
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -200,123 +284,61 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                                                                 ),
                                                               ),
                                                               Space.width(10),
-                                                              Text(
-                                                                controller
-                                                                        .allHolidayList[
-                                                                            i]
-                                                                        .date1
-                                                                        .toString() +
-                                                                    " - " +
-                                                                    controller
-                                                                        .allHolidayList[
-                                                                            i]
-                                                                        .date2
-                                                                        .toString(),
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontSize: MySize
-                                                                      .size16,
+                                                              Expanded(
+                                                                child: Text(
+                                                                  controller
+                                                                      .allHolidayList[
+                                                                          i]
+                                                                      .des
+                                                                      .toString(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize: MySize
+                                                                        .size16,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              IconButton(
-                                                                onPressed: () {
-                                                                  _asyncConfirmDialog(
-                                                                      context,
-                                                                      i,
-                                                                      controller);
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons.delete,
-                                                                  color: Colors
-                                                                      .red,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
+                                                          Space.height(10),
                                                         ],
                                                       ),
-                                                      Space.height(5),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            "Reason : ",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize:
-                                                                  MySize.size16,
-                                                            ),
-                                                          ),
-                                                          Space.width(10),
-                                                          Expanded(
-                                                            child: Text(
-                                                              controller
-                                                                  .allHolidayList[
-                                                                      i]
-                                                                  .des
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontSize: MySize
-                                                                    .size16,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Space.height(10),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              separatorBuilder: (context, i) {
-                                                return Space.height(20);
-                                              },
-                                              itemCount: controller
-                                                  .allHolidayList.length,
-                                              reverse: false,
-                                              padding: EdgeInsets.zero,
-                                            ),
-                                          )
+                                                    );
+                                                  },
+                                                  separatorBuilder:
+                                                      (context, i) {
+                                                    return Space.height(20);
+                                                  },
+                                                  itemCount: controller
+                                                      .allHolidayList.length,
+                                                  reverse: false,
+                                                  padding: EdgeInsets.zero,
+                                                ),
+                                              )
+                                            : Center(
+                                                child: Text(
+                                                    "No any Holidays found."),
+                                              ))
                                         : Center(
-                                            child:
-                                                Text("No any Holidays found."),
-                                          ))
-                                    : Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                              ),
-                            ],
-                          );
-                        }),
-                      ),
-                    )
-                  ],
-                ),
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                  ),
+                                ],
+                              );
+                            }),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           );
         });
   }

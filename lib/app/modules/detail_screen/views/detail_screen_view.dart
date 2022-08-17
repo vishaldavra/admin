@@ -17,39 +17,46 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
         init: DetailScreenController(),
         builder: (controller) {
           return Obx(() {
-            return Column(
-              children: [
-                Expanded(
-                  child: (controller.hasData.isFalse)
-                      ? Center(
-                          child: CircularProgressIndicator(
-                              color: appTheme.primaryTheme),
-                        )
-                      : Container(
-                          padding: Spacing.only(
-                              left: MySize.getWidth(80), top: 35, right: 100),
-                          child: Column(
-                            children: [
-                              getTopSection(
-                                  context: context, controller: controller),
-                              Space.height(20),
-                              selectDateUi(
-                                  controller: controller, context: context),
-                              Space.height(100),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    getClockInOutEntries(
-                                        context: context,
-                                        controller: controller),
-                                  ],
-                                ),
+            return SingleChildScrollView(
+              child: Container(
+                height: MySize.getHeight(900),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: (controller.hasData.isFalse)
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  color: appTheme.primaryTheme),
+                            )
+                          : Container(
+                              padding: Spacing.only(
+                                  left: MySize.getWidth(80),
+                                  top: 35,
+                                  right: 100),
+                              child: Column(
+                                children: [
+                                  getTopSection(
+                                      context: context, controller: controller),
+                                  Space.height(20),
+                                  selectDateUi(
+                                      controller: controller, context: context),
+                                  Space.height(100),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        getClockInOutEntries(
+                                            context: context,
+                                            controller: controller),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                )
-              ],
+                            ),
+                    )
+                  ],
+                ),
+              ),
             );
           });
         });
@@ -147,7 +154,8 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
     required DetailScreenController controller,
   }) {
     return Container(
-        child: Row(
+        child: Wrap(
+      runSpacing: MySize.getHeight(8),
       children: List.generate(controller.attendanceDetailsList.length, (index) {
         return InkWell(
           onTap: () {
