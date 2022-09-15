@@ -45,7 +45,12 @@ class CreateUserScreenController extends GetxController {
     "Game Artist",
     "Game Designer",
     "Ios Developer",
-    "UI UX Designer"
+    "UI UX Designer",
+    "Business Development Manager",
+    "QA Tester",
+    "Human Resource Manager",
+    "Human Resource Executive",
+    "Business Development Executive"
   ].obs;
   @override
   void onInit() {
