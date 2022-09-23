@@ -45,7 +45,8 @@ class LoginPageController extends GetxController {
       params: formData,
       successCallback: (response, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);
-        if (response["status"] == "0") {
+        Map<String, dynamic> res = jsonDecode(response);
+        if (res["status"] == "0") {
           app.resolve<CustomDialogs>().getDialog(
               title: "Failed",
               desc: "Please enter valid user name or password.");

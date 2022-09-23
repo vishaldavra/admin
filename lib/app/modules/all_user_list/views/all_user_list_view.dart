@@ -114,18 +114,25 @@ class AllUserListView extends GetWidget<AllUserListController> {
                                                             FontWeight.w600),
                                                   ),
                                                   Space.height(10),
-                                                  Text(
-                                                    controller
-                                                        .usersList[index].role!
-                                                        .toUpperCase(),
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            MySize.getHeight(
-                                                                13),
-                                                        color:
-                                                            Color(0xff626262),
-                                                        fontWeight:
-                                                            FontWeight.w600),
+                                                  SizedBox(
+                                                    width: MySize.getWidth(210),
+                                                    child: Text(
+                                                      controller
+                                                          .usersList[index]
+                                                          .role!
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          fontSize:
+                                                              MySize.getHeight(
+                                                                  13),
+                                                          color:
+                                                              Color(0xff626262),
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                      maxLines: 1,
+                                                    ),
                                                   ),
                                                   Space.height(10),
                                                   Text(

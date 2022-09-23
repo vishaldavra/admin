@@ -490,6 +490,10 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
               color: Colors.red,
               onPressed: () {
                 Navigator.of(context).pop();
+                controller.callApiForDeleteHoliday(
+                    context: Get.context!,
+                    isFromButton: true,
+                    id: controller.allHolidayList[index].id.toString());
               },
             )
           ],

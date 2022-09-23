@@ -1,4 +1,5 @@
-const baseUrl = "https://dsrsoftech.com/vishal/argon/";
+const baseUrl = "http://43.205.254.247/";
+// const baseUrl = "https://dsrsoftech.com/vishal/argon/";
 const imageUrl = "https://dsrsoftech.com/vishal/argon/img/";
 
 class ApiConstant {

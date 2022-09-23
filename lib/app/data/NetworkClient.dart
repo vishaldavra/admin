@@ -37,6 +37,8 @@ class NetworkClient {
     if (box.read("token") != null) {
       token = box.read("token");
     }
+    authHeaders["Access-Control-Allow-Origin"] = "*";
+
     if (!isNullEmptyOrFalse(token)) {
       authHeaders["Authorization"] = "Bearer " + token;
     } else if (!isNullEmptyOrFalse(detailToken)) {
@@ -81,7 +83,10 @@ class NetworkClient {
 
     switch (method) {
       case MethodType.Post:
-        Response response = await dio.post(baseUrl + command, data: params);
+        Response response =
+            await dio.post(baseUrl + command, data: params).catchError((error) {
+          print("Error: = $error");
+        });
 
         parseResponse(context, response,
             successCallback: successCallback!,
