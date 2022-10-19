@@ -76,7 +76,8 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                                     url: imageUrl +
                                                         controller
                                                             .imageFromServer
-                                                            .value,
+                                                            .value
+                                                            .toString(),
                                                     height: 50,
                                                     width: 50,
                                                   ),

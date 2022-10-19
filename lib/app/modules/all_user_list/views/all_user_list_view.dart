@@ -75,7 +75,8 @@ class AllUserListView extends GetWidget<AllUserListController> {
                                                       url: imageUrl +
                                                           controller
                                                               .usersList[index]
-                                                              .img!,
+                                                              .img
+                                                              .toString(),
                                                       height: 50,
                                                       width: 50,
                                                     ),
@@ -94,7 +95,8 @@ class AllUserListView extends GetWidget<AllUserListController> {
                                                       imageLink: imageUrl +
                                                           controller
                                                               .usersList[index]
-                                                              .img!);
+                                                              .img
+                                                              .toString());
                                                 },
                                               ),
                                               Space.width(20),

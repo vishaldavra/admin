@@ -1,6 +1,7 @@
-const baseUrl = "http://43.205.254.247/";
+const baseUrl = "http://43.205.254.247/api/";
 // const baseUrl = "https://dsrsoftech.com/vishal/argon/";
-const imageUrl = "https://dsrsoftech.com/vishal/argon/img/";
+// const imageUrl = "https://dsrsoftech.com/vishal/argon/img/";
+const imageUrl = "http://43.205.254.247/api/img/";
 
 class ApiConstant {
   static const createUser = "add_user.php";
