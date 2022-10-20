@@ -1,26 +1,28 @@
-class AllUsersDataModel {
-  List<User>? data;
+class SingleUserDataModel {
+  String? status;
+  String? msg;
+  Data? data;
 
-  AllUsersDataModel({this.data});
+  SingleUserDataModel({this.status, this.msg, this.data});
 
-  AllUsersDataModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      json['data'].forEach((v) {
-        data!.add(User.fromJson(v));
-      });
-    }
+  SingleUserDataModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    msg = json['msg'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['msg'] = this.msg;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class User {
+class Data {
   String? id;
   String? name;
   String? email;
@@ -34,7 +36,7 @@ class User {
   String? date;
   String? joining;
 
-  User(
+  Data(
       {this.id,
       this.name,
       this.email,
@@ -48,19 +50,19 @@ class User {
       this.date,
       this.joining});
 
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'].toString();
-    name = json['name'].toString();
-    email = json['email'].toString();
-    mobile = json['mobile'].toString();
-    adr = json['adr'].toString();
-    gender = json['gender'].toString();
-    role = json['role'].toString();
-    salary = json['salary'].toString();
-    pass = json['pass'].toString();
-    img = json['img'].toString();
-    date = json['date'].toString();
-    joining = json['joining'].toString();
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    mobile = json['mobile'];
+    adr = json['adr'];
+    gender = json['gender'];
+    role = json['role'];
+    salary = json['salary'];
+    pass = json['pass'];
+    img = json['img'];
+    date = json['date'];
+    joining = json['joining'];
   }
 
   Map<String, dynamic> toJson() {

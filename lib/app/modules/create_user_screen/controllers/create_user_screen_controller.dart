@@ -4,8 +4,8 @@ import 'package:argon_admin/app/constants/api_constant.dart';
 import 'package:argon_admin/app/constants/sizeConstant.dart';
 import 'package:argon_admin/app/data/NetworkClient.dart';
 import 'package:argon_admin/app/models/all_users_data_model.dart';
+import 'package:argon_admin/app/models/single_user_data_model.dart';
 import 'package:argon_admin/app/modules/all_user_list/controllers/all_user_list_controller.dart';
-import 'package:argon_admin/app/modules/dashboard_screen/controllers/dashboard_screen_controller.dart';
 import 'package:argon_admin/app/routes/app_pages.dart';
 import 'package:argon_admin/utilities/custome_dialog.dart';
 import 'package:dio/dio.dart';
@@ -174,18 +174,48 @@ class CreateUserScreenController extends GetxController {
       params: formData,
       successCallback: (response, message) {
         hasData.value = true;
-        user = User.fromJson(response["data"]);
-        firstNameController.text = user!.name!;
-        lastNameController.text = "NA";
-        emailController.text = user!.email!;
-        selectGender.value = user!.gender!;
-        addressController.text = user!.adr!;
-        role.value = user!.role!;
-        mobileNumberController.text = user!.mobile!;
-        salaryController.text = user!.salary!;
-        passwordController.text = user!.pass!;
-        imageFromServer.value = user!.img!;
-        selectedDate.value = user!.joining!;
+        print("Res := ${jsonDecode(response)}");
+        // user = User.fromJson(jsonDecode(response["data"]));
+        SingleUserDataModel res =
+            SingleUserDataModel.fromJson(jsonDecode(response));
+
+        if (!isNullEmptyOrFalse(res.data)) {
+          if (!isNullEmptyOrFalse(res.data!.name)) {
+            firstNameController.text = res.data!.name.toString();
+          }
+          lastNameController.text = "NA";
+          if (!isNullEmptyOrFalse(res.data!.email)) {
+            emailController.text = res.data!.email.toString();
+          }
+          if (!isNullEmptyOrFalse(res.data!.gender)) {
+            selectGender.value = res.data!.gender.toString();
+          }
+          if (!isNullEmptyOrFalse(res.data!.adr)) {
+            addressController.text = res.data!.adr.toString();
+          }
+
+          if (!isNullEmptyOrFalse(res.data!.role)) {
+            role.value = res.data!.role.toString();
+          }
+
+          if (!isNullEmptyOrFalse(res.data!.mobile)) {
+            mobileNumberController.text = res.data!.mobile.toString();
+          }
+
+          if (!isNullEmptyOrFalse(res.data!.salary)) {
+            salaryController.text = res.data!.salary.toString();
+          }
+
+          if (!isNullEmptyOrFalse(res.data!.pass)) {
+            passwordController.text = res.data!.pass.toString();
+          }
+          if (!isNullEmptyOrFalse(res.data!.img)) {
+            imageFromServer.value = res.data!.img.toString();
+          }
+          if (!isNullEmptyOrFalse(res.data!.joining)) {
+            selectedDate.value = res.data!.joining.toString();
+          }
+        }
       },
       failureCallback: (status, message) {
         hasData.value = true;
