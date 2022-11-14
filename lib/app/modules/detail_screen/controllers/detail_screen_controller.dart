@@ -31,6 +31,8 @@ class DetailScreenController extends GetxController {
   late RxInt selectedIndexForEntry;
   RxString totalTime = getTotalTime(0).obs;
   RxInt counter = 0.obs;
+  RxInt monthTotalTime = 0.obs;
+  RxInt totalMonthHourVisibleCounter = 0.obs;
 
   @override
   void onInit() {
@@ -58,6 +60,7 @@ class DetailScreenController extends GetxController {
     dataEntryList.clear();
     dataList.clear();
     attendanceDetailsList.clear();
+    monthTotalTime.value = 0;
     hasData.value = false;
     Map<String, dynamic> dict = {};
     if (selectedMonth.value.month == DateTime.now().month) {
@@ -87,6 +90,17 @@ class DetailScreenController extends GetxController {
           });
           attendanceDetailsList.addAll(dataList);
           if (!isNullEmptyOrFalse(attendanceDetailsList)) {
+            attendanceDetailsList.forEach((element) {
+              if (!isNullEmptyOrFalse(element.data)) {
+                if (!isNullEmptyOrFalse(element.data!.last.total)) {
+                  monthTotalTime.value = monthTotalTime.value +
+                      int.parse(element.data!.last.total!);
+                }
+                print(
+                    " Main : = ${monthTotalTime.value} MainTimne: = ${getTotalTime(monthTotalTime.value)}, total : = ${element.data!.last.total}  Seconds := ${getTotalTime(int.parse(element.data!.last.total!))}");
+              }
+            });
+
             if (selectedIndexForEntry.value == 0) {
               selectedIndexForEntry.value = attendanceDetailsList.length - 1;
               attendanceDetailsList.last.isSelected.value = true;

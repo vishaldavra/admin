@@ -77,11 +77,22 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
           child: Icon(Icons.arrow_back_ios, size: MySize.getWidth(20)),
         ),
         Space.width(10),
-        Text(
-          "Detail Screen View",
-          style: TextStyle(
-              fontWeight: FontWeight.w700, fontSize: MySize.getHeight(22)),
+        GestureDetector(
+          onTap: () {
+            controller.totalMonthHourVisibleCounter++;
+          },
+          child: Text(
+            "Detail Screen View",
+            style: TextStyle(
+                fontWeight: FontWeight.w700, fontSize: MySize.getHeight(22)),
+          ),
         ),
+        (controller.totalMonthHourVisibleCounter >= 5)
+            ? Text(
+                "    ${Duration(seconds: controller.monthTotalTime.value).inHours}",
+                style: TextStyle(fontSize: MySize.getHeight(20)),
+              )
+            : Container(),
       ]),
       Container(
         padding: Spacing.symmetric(horizontal: 20, vertical: 10),

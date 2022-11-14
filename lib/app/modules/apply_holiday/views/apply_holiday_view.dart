@@ -474,28 +474,44 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
           title: Text('Delete Holiday'),
           content: const Text('Are you sure you want to delete your Holiday?'),
           actions: <Widget>[
-            FlatButton(
-              child: const Text('Cancel'),
-              onPressed: () {
+            InkWell(
+              onTap: () {
                 Navigator.of(context).pop();
               },
+              child: Container(
+                  height: MySize.getHeight(40),
+                  width: MySize.getWidth(100),
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius:
+                          BorderRadius.circular(MySize.getHeight(10))),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(color: Colors.white),
+                  )),
             ),
-            FlatButton(
-              child: const Text(
-                'Delete',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              color: Colors.red,
-              onPressed: () {
+            InkWell(
+              onTap: () {
                 Navigator.of(context).pop();
                 controller.callApiForDeleteHoliday(
                     context: Get.context!,
                     isFromButton: true,
                     id: controller.allHolidayList[index].id.toString());
               },
-            )
+              child: Container(
+                  height: MySize.getHeight(40),
+                  width: MySize.getWidth(100),
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius:
+                          BorderRadius.circular(MySize.getHeight(10))),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(color: Colors.white),
+                  )),
+            ),
           ],
         );
       },
