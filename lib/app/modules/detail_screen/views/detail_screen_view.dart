@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../models/attendace_details_model.dart';
+import '../../../models/chart_sample_data.dart';
 import '../controllers/detail_screen_controller.dart';
 
 class DetailScreenView extends GetWidget<DetailScreenController> {
@@ -44,6 +46,9 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                                   Expanded(
                                     child: Row(
                                       children: [
+                                        getChartSection(
+                                            context: context,
+                                            controller: controller),
                                         getClockInOutEntries(
                                             context: context,
                                             controller: controller),
@@ -158,6 +163,62 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
         ),
       ),
     ]);
+  }
+
+  getChartSection(
+      {required BuildContext context,
+      required DetailScreenController controller}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text("Average Hours:-"),
+                Text(
+                    "${Duration(seconds: controller.monthTotalTime.value).inHours / controller.dataList.length}")
+              ],
+            ),
+            Container(
+              height: MySize.getHeight(400),
+              width: MySize.getWidth(500),
+              child: SfCartesianChart(
+                plotAreaBorderWidth: 0,
+                title: ChartTitle(
+                    text:
+                        "${DateFormat("MMM").format(controller.selectedMonth.value)} / ${controller.selectedMonth.value.year}"),
+                primaryXAxis: CategoryAxis(
+                  majorGridLines: MajorGridLines(width: 0),
+                ),
+                primaryYAxis: NumericAxis(
+                    axisLine: AxisLine(width: 0),
+                    labelFormat: '{value}',
+                    title: AxisTitle(text: "Hours"),
+                    majorTickLines: MajorTickLines(size: 0)),
+                series: _getDefaultColumnSeries(controller: controller),
+                tooltipBehavior: TooltipBehavior(
+                    enable: true, header: '', canShowMarker: false),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries(
+      {required DetailScreenController controller}) {
+    return <ColumnSeries<ChartSampleData, String>>[
+      ColumnSeries<ChartSampleData, String>(
+        dataSource: controller.chartData,
+        xValueMapper: (ChartSampleData sales, _) =>
+            sales.x.toString().split("-")[2].toString().split(" ")[0],
+        yValueMapper: (ChartSampleData sales, _) => sales.y,
+      )
+    ];
   }
 
   selectDateUi({

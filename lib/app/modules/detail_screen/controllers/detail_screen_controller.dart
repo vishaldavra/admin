@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData;
 import '../../../models/attendace_details_model.dart';
+import '../../../models/chart_sample_data.dart';
 import '../../../models/holidayDataModel.dart';
 
 class DetailScreenController extends GetxController {
@@ -26,7 +27,10 @@ class DetailScreenController extends GetxController {
   RxList<AttendanceDetailsModel> attendanceDetailsList =
       RxList<AttendanceDetailsModel>([]);
   RxList<AttendanceDetailsModel> dataList = RxList<AttendanceDetailsModel>([]);
+  RxList<ChartSampleData> chartData = RxList<ChartSampleData>([]);
+
   RxList<Data> dataEntryList = RxList<Data>([]);
+  RxList<Data> dataEntryListChart = RxList<Data>([]);
   RxList<HolidayData> allHolidayList = RxList<HolidayData>([]);
   late RxInt selectedIndexForEntry;
   RxString totalTime = getTotalTime(0).obs;
@@ -90,14 +94,16 @@ class DetailScreenController extends GetxController {
           });
           attendanceDetailsList.addAll(dataList);
           if (!isNullEmptyOrFalse(attendanceDetailsList)) {
+            dataList.clear();
             attendanceDetailsList.forEach((element) {
               if (!isNullEmptyOrFalse(element.data)) {
+                dataList.add(element);
                 if (!isNullEmptyOrFalse(element.data!.last.total)) {
                   monthTotalTime.value = monthTotalTime.value +
                       int.parse(element.data!.last.total!);
                 }
-                print(
-                    " Main : = ${monthTotalTime.value} MainTimne: = ${getTotalTime(monthTotalTime.value)}, total : = ${element.data!.last.total}  Seconds := ${getTotalTime(int.parse(element.data!.last.total!))}");
+                // print(
+                //     " Main : = ${monthTotalTime.value} MainTimne: = ${getTotalTime(monthTotalTime.value)}, total : = ${element.data!.last.total}  Seconds := ${getTotalTime(int.parse(element.data!.last.total!))}");
               }
             });
 
@@ -171,6 +177,17 @@ class DetailScreenController extends GetxController {
               }
             });
           }
+          //
+          dataEntryListChart.clear();
+
+          if (!isNullEmptyOrFalse(attendanceDetailsList)) {
+            attendanceDetailsList.forEach((element) {
+              element.data!.forEach((element) {
+                dataEntryListChart.add(element);
+              });
+            });
+          }
+          getChartData();
           if (!isNullEmptyOrFalse(
               attendanceDetailsList[selectedIndexForEntry.value].data)) {
             RxList<Data> data2 = RxList<Data>([]);
@@ -191,6 +208,15 @@ class DetailScreenController extends GetxController {
         print(" error ");
       },
     );
+  }
+
+  getChartData() {
+    chartData.clear();
+    dataEntryListChart.forEach((element) {
+      chartData.add(ChartSampleData(
+          x: element.date!,
+          y: Duration(seconds: int.parse(element.total!)).inHours));
+    });
   }
 
   callUpdateAttendance(
