@@ -213,9 +213,11 @@ class DetailScreenController extends GetxController {
   getChartData() {
     chartData.clear();
     dataEntryListChart.forEach((element) {
-      chartData.add(ChartSampleData(
-          x: element.date!,
-          y: Duration(seconds: int.parse(element.total!)).inHours));
+      chartData.add(
+        ChartSampleData(
+            x: element.date!,
+            y: Duration(seconds: int.parse(element.total!)).inHours),
+      );
     });
   }
 

@@ -213,11 +213,17 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
       {required DetailScreenController controller}) {
     return <ColumnSeries<ChartSampleData, String>>[
       ColumnSeries<ChartSampleData, String>(
-          dataSource: controller.chartData,
-          xValueMapper: (ChartSampleData sales, _) =>
-              sales.x.toString().split("-")[2].toString().split(" ")[0],
-          yValueMapper: (ChartSampleData sales, _) => sales.y,
-          color: appTheme.primaryTheme)
+        dataSource: controller.chartData,
+        xValueMapper: (ChartSampleData sales, _) =>
+            sales.x.toString().split("-")[2].toString().split(" ")[0],
+        yValueMapper: (ChartSampleData sales, _) => sales.y,
+        pointColorMapper: (ChartSampleData sales, index) =>
+            (sales.y! > 8 && sales.y! < 10)
+                ? Colors.orange
+                : (sales.y! > 10)
+                    ? Colors.red
+                    : Colors.blue,
+      )
     ];
   }
 
