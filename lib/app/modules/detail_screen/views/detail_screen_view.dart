@@ -179,7 +179,7 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
               children: [
                 Text("Average Hours:-"),
                 Text(
-                    "${Duration(seconds: controller.monthTotalTime.value).inHours / controller.dataList.length}")
+                    "${(Duration(seconds: controller.monthTotalTime.value).inHours / controller.dataList.length).toStringAsFixed(2)}")
               ],
             ),
             Container(
@@ -213,11 +213,11 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
       {required DetailScreenController controller}) {
     return <ColumnSeries<ChartSampleData, String>>[
       ColumnSeries<ChartSampleData, String>(
-        dataSource: controller.chartData,
-        xValueMapper: (ChartSampleData sales, _) =>
-            sales.x.toString().split("-")[2].toString().split(" ")[0],
-        yValueMapper: (ChartSampleData sales, _) => sales.y,
-      )
+          dataSource: controller.chartData,
+          xValueMapper: (ChartSampleData sales, _) =>
+              sales.x.toString().split("-")[2].toString().split(" ")[0],
+          yValueMapper: (ChartSampleData sales, _) => sales.y,
+          color: appTheme.primaryTheme)
     ];
   }
 
