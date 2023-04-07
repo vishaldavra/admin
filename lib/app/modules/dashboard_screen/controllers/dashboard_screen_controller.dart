@@ -58,7 +58,7 @@ class DashboardScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print("error");
+        //print("error");
       },
     );
   }
@@ -76,14 +76,14 @@ class DashboardScreenController extends GetxController {
       successCallback: (response, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);
         getAllUsers(context: context);
-        print("Response := $response");
+        //print("Response := $response");
       },
       failureCallback: (status, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error ");
+        //print(" error ");
       },
     );
   }

@@ -16,15 +16,19 @@ import '../../../models/holidayDataModel.dart';
 class DetailScreenController extends GetxController {
   DashboardScreenController? dashboardScreenController;
   Rx<DateTime> selectedMonth = DateTime.now().obs;
+  Rx<DateTime> selectedMonth1 = DateTime.now().obs;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController editTimeController = TextEditingController();
   DateTime editTime = DateTime.now();
   late DateTime lastDateOfMonth;
+  late DateTime lastDateOfMonth1;
   RxBool hasData = false.obs;
   String? userEmail;
   List titleColumn = ["Date", "Total Time", ""];
   List titleColumn2 = ["Time", "Status", "Edit"];
   RxList<AttendanceDetailsModel> attendanceDetailsList =
+      RxList<AttendanceDetailsModel>([]);
+  RxList<AttendanceDetailsModel> attendanceDetailsList1 =
       RxList<AttendanceDetailsModel>([]);
   RxList<AttendanceDetailsModel> dataList = RxList<AttendanceDetailsModel>([]);
   RxList<ChartSampleData> chartData = RxList<ChartSampleData>([]);
@@ -45,6 +49,7 @@ class DetailScreenController extends GetxController {
     selectedIndexForEntry = 0.obs;
 
     lastDateOfMonth = getLastDateOfMonth(date: selectedMonth.value);
+    lastDateOfMonth1 = getLastDateOfMonth(date: selectedMonth.value);
     if (box.read(ArgumentConstant.userEmailForDetail) != null) {
       userEmail = box.read(ArgumentConstant.userEmailForDetail);
     }
@@ -177,17 +182,8 @@ class DetailScreenController extends GetxController {
               }
             });
           }
-          //
-          dataEntryListChart.clear();
 
-          if (!isNullEmptyOrFalse(attendanceDetailsList)) {
-            attendanceDetailsList.forEach((element) {
-              element.data!.forEach((element) {
-                dataEntryListChart.add(element);
-              });
-            });
-          }
-          getChartData();
+          // getChartData();
           if (!isNullEmptyOrFalse(
               attendanceDetailsList[selectedIndexForEntry.value].data)) {
             RxList<Data> data2 = RxList<Data>([]);
@@ -198,6 +194,27 @@ class DetailScreenController extends GetxController {
               dataEntryList.add(element);
             });
           }
+          //
+          dataEntryListChart.clear();
+          chartData.clear();
+          if (!isNullEmptyOrFalse(attendanceDetailsList)) {
+            attendanceDetailsList.forEach((element) {
+              if (!isNullEmptyOrFalse(element.data)) {
+                if (!isNullEmptyOrFalse(element.data!.last)) {
+                  chartData.add(
+                    ChartSampleData(
+                      x: element.data!.last.date!,
+                      y: Duration(seconds: int.parse(element.data!.last.total!))
+                          .inHours,
+                    ),
+                  );
+                }
+              }
+              // element.data!.forEach((element) {
+              //   dataEntryListChart.add(element);
+              // });
+            });
+          }
         }
       },
       failureCallback: (status, message) {
@@ -205,21 +222,98 @@ class DetailScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error ");
+        //print(" error ");
       },
     );
   }
 
-  getChartData() {
-    chartData.clear();
-    dataEntryListChart.forEach((element) {
-      chartData.add(
-        ChartSampleData(
-            x: element.date!,
-            y: Duration(seconds: int.parse(element.total!)).inHours),
-      );
-    });
+  getChartAttendanceDetails({required BuildContext context}) async {
+    dataList.clear();
+    monthTotalTime.value = 0;
+    Map<String, dynamic> dict = {};
+    if (selectedMonth1.value.month == DateTime.now().month) {
+      lastDateOfMonth = DateTime.now();
+    }
+    dict["email"] = userEmail;
+    dict["date1"] =
+        "${selectedMonth1.value.year}-${selectedMonth1.value.month}-01";
+    dict["date2"] =
+        "${selectedMonth1.value.year}-${selectedMonth1.value.month}-${lastDateOfMonth1.day}";
+    FormData formData = FormData.fromMap(dict);
+    NetworkClient.getInstance.callApi(
+      context,
+      baseUrl,
+      ApiConstant.userMonthData,
+      MethodType.Post,
+      header: NetworkClient.getInstance.getAuthHeaders(),
+      params: formData,
+      successCallback: (response, message) {
+        hasData.value = true;
+        attendanceDetailsList1.clear();
+        List res = jsonDecode(response);
+        if (!isNullEmptyOrFalse(res)) {
+          res.forEach((element) {
+            AttendanceDetailsModel attendanceDetailsModel =
+                AttendanceDetailsModel.fromJson(element);
+            dataList.add(attendanceDetailsModel);
+          });
+          attendanceDetailsList1.addAll(dataList);
+          if (!isNullEmptyOrFalse(attendanceDetailsList1)) {
+            dataList.clear();
+            attendanceDetailsList1.forEach((element) {
+              if (!isNullEmptyOrFalse(element.data)) {
+                dataList.add(element);
+                if (!isNullEmptyOrFalse(element.data!.last.total)) {
+                  monthTotalTime.value = monthTotalTime.value +
+                      int.parse(element.data!.last.total!);
+                }
+              }
+            });
+
+            dataEntryListChart.clear();
+            chartData.clear();
+            if (!isNullEmptyOrFalse(attendanceDetailsList1)) {
+              attendanceDetailsList1.forEach((element) {
+                if (!isNullEmptyOrFalse(element.data)) {
+                  if (!isNullEmptyOrFalse(element.data!.last)) {
+                    chartData.add(
+                      ChartSampleData(
+                        x: element.data!.last.date!,
+                        y: Duration(
+                                seconds: int.parse(element.data!.last.total!))
+                            .inHours,
+                      ),
+                    );
+                  }
+                }
+                // element.data!.forEach((element) {
+                //   dataEntryListChart.add(element);
+                // });
+              });
+            }
+          }
+        }
+      },
+      failureCallback: (status, message) {
+        hasData.value = true;
+        app
+            .resolve<CustomDialogs>()
+            .getDialog(title: "Failed", desc: "Something went wrong.");
+        //print(" error ");
+      },
+    );
   }
+
+  // getChartData() {
+  //   chartData.clear();
+  //   dataEntryListChart.forEach((element) {
+  //     chartData.add(
+  //       ChartSampleData(
+  //           x: element.date!,
+  //           y: Duration(seconds: int.parse(element.total!)).inHours),
+  //     );
+  //   });
+  // }
 
   callUpdateAttendance(
       {required BuildContext context,
@@ -241,7 +335,7 @@ class DetailScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error ");
+        //print(" error ");
       },
     );
   }
@@ -272,8 +366,8 @@ class DetailScreenController extends GetxController {
       },
       failureCallback: (status, message) {
         hasData.value = true;
-        print(" error");
-        print(status);
+        // print(" error");
+        // print(status);
       },
     );
   }

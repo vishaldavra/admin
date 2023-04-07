@@ -59,7 +59,7 @@ class CreateUserScreenController extends GetxController {
     );
     allUserListController = Get.find<AllUserListController>();
     selectedDate.value = "${dateTime.year}/${dateTime.month}/${dateTime.day}";
-    print("Testing:= ${box.read(ArgumentConstant.userEmailForEdit)}");
+    //print("Testing:= ${box.read(ArgumentConstant.userEmailForEdit)}");
     if (box.read(ArgumentConstant.isForEdit) != null &&
         box.read(ArgumentConstant.userEmailForEdit) != null) {
       isForEdit.value = box.read(ArgumentConstant.isForEdit);
@@ -154,7 +154,7 @@ class CreateUserScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error");
+        // print(" error");
       },
     );
   }
@@ -174,7 +174,7 @@ class CreateUserScreenController extends GetxController {
       params: formData,
       successCallback: (response, message) {
         hasData.value = true;
-        print("Res := ${jsonDecode(response)}");
+        //print("Res := ${jsonDecode(response)}");
         // user = User.fromJson(jsonDecode(response["data"]));
         SingleUserDataModel res =
             SingleUserDataModel.fromJson(jsonDecode(response));
@@ -222,7 +222,7 @@ class CreateUserScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error");
+        //print(" error");
       },
     );
   }
@@ -276,7 +276,7 @@ class CreateUserScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error");
+        //print(" error");
       },
     );
   }

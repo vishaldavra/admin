@@ -61,9 +61,9 @@ class NetworkClient {
     Function(dynamic message, String statusCode)? failureCallback,
   }) async {
     GetStorage box = GetStorage();
-    print(box.read(ArgumentConstant.token));
+    //print(box.read(ArgumentConstant.token));
     var connectivityResult = await Connectivity().checkConnectivity();
-    print("Connectivity Result := ${connectivityResult}");
+    //print("Connectivity Result := ${connectivityResult}");
     if (connectivityResult == ConnectivityResult.none) {
       failureCallback!("", "No Internet Connection");
       getDialog(title: "Error", desc: "No Internet Connection.");
@@ -85,7 +85,7 @@ class NetworkClient {
       case MethodType.Post:
         Response response =
             await dio.post(baseUrl + command, data: params).catchError((error) {
-          print("Error: = $error");
+          //print("Error: = $error");
         });
 
         parseResponse(context, response,

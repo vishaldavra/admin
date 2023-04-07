@@ -128,6 +128,7 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
             controller.selectedIndexForEntry.value = 0;
             controller.lastDateOfMonth =
                 getLastDateOfMonth(date: controller.selectedMonth.value);
+            controller.selectedMonth1.value = controller.selectedMonth.value;
             controller.getAttendanceDetails(context: context);
           }
         },
@@ -175,11 +176,92 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            (controller.dataList.isEmpty)
+                ? Center(
+                    child: Text("No any entry found."),
+                  )
+                : Row(
+                    children: [
+                      Text(
+                        "Average Hours:-",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MySize.size26,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "${(Duration(seconds: controller.monthTotalTime.value).inHours / controller.dataList.length).toStringAsFixed(2)}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MySize.size26,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Spacing.width(50),
+                      InkWell(
+                        onTap: () async {
+                          controller.selectedMonth1.value =
+                              (await showMonthYearPicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2019),
+                            lastDate: DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                            ),
+                          ))!;
+
+                          if (!isNullEmptyOrFalse(controller.selectedMonth1)) {
+                            controller.selectedIndexForEntry.value = 0;
+                            controller.lastDateOfMonth1 = getLastDateOfMonth(
+                                date: controller.selectedMonth1.value);
+                            controller.getChartAttendanceDetails(
+                                context: context);
+                          }
+                        },
+                        child: Container(
+                          height: MySize.getHeight(40),
+                          width: MySize.getWidth(150),
+                          margin: Spacing.only(
+                              top: MySize.getHeight(10), bottom: 10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: appTheme.primaryTheme,
+                              width: MySize.getHeight(2),
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(MySize.getHeight(30)),
+                          ),
+                          alignment: Alignment.center,
+                          padding: Spacing.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  "${DateFormat("MMM").format(controller.selectedMonth1.value)} / ${controller.selectedMonth1.value.year}",
+                                  style: TextStyle(
+                                      color: appTheme.primaryTheme,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: MySize.getWidth(18))),
+                              Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color: appTheme.primaryTheme,
+                                size: MySize.getHeight(30),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
             Row(
               children: [
-                Text("Average Hours:-"),
-                Text(
-                    "${(Duration(seconds: controller.monthTotalTime.value).inHours / controller.dataList.length).toStringAsFixed(2)}")
+                getColorData(
+                  context: context,
+                  color: Colors.orange.shade200,
+                  name: "9 Hours",
+                ),
               ],
             ),
             Container(
@@ -200,11 +282,31 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                     majorTickLines: MajorTickLines(size: 0)),
                 series: _getDefaultColumnSeries(controller: controller),
                 tooltipBehavior: TooltipBehavior(
-                    enable: true, header: '', canShowMarker: false),
+                  enable: true,
+                  header: '',
+                  canShowMarker: true,
+                  format: 'point.x - point.y',
+                ),
               ),
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  getColorData(
+      {required BuildContext context,
+      required Color color,
+      required String name}) {
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: MySize.size10,
+          backgroundColor: color,
+        ),
+        Spacing.width(MySize.size10!),
+        Text(name),
       ],
     );
   }
@@ -217,12 +319,15 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
         xValueMapper: (ChartSampleData sales, _) =>
             sales.x.toString().split("-")[2].toString().split(" ")[0],
         yValueMapper: (ChartSampleData sales, _) => sales.y,
-        pointColorMapper: (ChartSampleData sales, index) =>
-            (sales.y! > 8 && sales.y! < 10)
-                ? Colors.orange
-                : (sales.y! > 10)
-                    ? Colors.red
-                    : Colors.blue,
+        pointColorMapper: (ChartSampleData sales, index) => (sales.y! == 9)
+            ? Colors.orange.shade200
+            : (sales.y! > 9)
+                ? Colors.deepOrange.shade200
+                : (sales.y! <= 7)
+                    ? Colors.red.shade400
+                    : Colors.blue.shade200,
+        dataLabelSettings: const DataLabelSettings(
+            isVisible: true, textStyle: TextStyle(fontSize: 10)),
       )
     ];
   }
@@ -534,8 +639,8 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                         Space.width(15),
                         InkWell(
                           onTap: () {
-                            print(
-                                "Update Index := ${controller.selectedIndexForEntry}");
+                            // print(
+                            //     "Update Index := ${controller.selectedIndexForEntry}");
                             updateTimeEntry(
                                 selectedIndex: selectedIndex,
                                 context: context,

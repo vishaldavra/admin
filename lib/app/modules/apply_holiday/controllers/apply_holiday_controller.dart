@@ -135,9 +135,9 @@ class ApplyHolidayController extends GetxController {
         }
         app.resolve<CustomDialogs>().getDialog(title: "Failed", desc: message);
 
-        print(" error");
+        //print(" error");
 
-        print(status);
+        //print(status);
       },
     );
   }
@@ -182,9 +182,9 @@ class ApplyHolidayController extends GetxController {
         }
         app.resolve<CustomDialogs>().getDialog(title: "Failed", desc: message);
 
-        print(" error");
+        //print(" error");
 
-        print(status);
+        // print(status);
       },
     );
   }

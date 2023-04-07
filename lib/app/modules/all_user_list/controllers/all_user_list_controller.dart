@@ -58,7 +58,7 @@ class AllUserListController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error ");
+        //print(" error ");
       },
     );
   }
@@ -82,7 +82,7 @@ class AllUserListController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error ");
+        //print(" error ");
       },
     );
   }

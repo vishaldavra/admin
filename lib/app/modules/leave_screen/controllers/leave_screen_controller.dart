@@ -71,7 +71,7 @@ class LeaveScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error ");
+        //print(" error ");
       },
     );
   }
@@ -101,7 +101,7 @@ class LeaveScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error ");
+        //print(" error ");
       },
     );
   }

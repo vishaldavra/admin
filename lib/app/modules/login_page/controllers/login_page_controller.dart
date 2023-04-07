@@ -60,7 +60,7 @@ class LoginPageController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error");
+        //print(" error");
       },
     );
   }
