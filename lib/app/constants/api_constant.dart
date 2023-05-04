@@ -1,7 +1,7 @@
-const baseUrl = "http://3.109.125.94/api/";
+const baseUrl = "https://employee.argoninfotech.com/api/";
 // const baseUrl = "https://dsrsoftech.com/vishal/argon/";
 // const imageUrl = "https://dsrsoftech.com/vishal/argon/img/";
-const imageUrl = "http://3.109.125.94/api/img/";
+const imageUrl = "https://employee.argoninfotech.com/api/img/";
 
 class ApiConstant {
   static const createUser = "add_user.php";

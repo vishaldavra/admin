@@ -255,15 +255,15 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                       ),
                     ],
                   ),
-            Row(
-              children: [
-                getColorData(
-                  context: context,
-                  color: Colors.orange.shade200,
-                  name: "9 Hours",
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     getColorData(
+            //       context: context,
+            //       color: Colors.orange.shade200,
+            //       name: "9 Hours",
+            //     ),
+            //   ],
+            // ),
             Container(
               height: MySize.getHeight(400),
               width: MySize.getWidth(500),
